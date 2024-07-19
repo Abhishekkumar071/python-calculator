@@ -1,0 +1,78 @@
+import random
+import tkinter as tk
+
+class RockPaperScissors:
+    def __init__(self):
+        # Create the main window
+        self.window = tk.Tk()
+        # Set the window title
+        self.window.title("Rock, Paper, Scissors")
+        # Set the window size
+        self.window.geometry("300x200")
+
+        # Create StringVars to store the user's choice, computer's choice, and result
+        self.user_choice = tk.StringVar()
+        self.computer_choice = tk.StringVar()
+        self.result = tk.StringVar()
+
+        # Create the widgets
+        self.create_widgets()
+
+    def create_widgets(self):
+        # Create a label to prompt the user to choose their move
+        tk.Label(self.window, text="Choose your move:").pack()
+        # Create radio buttons for the user to choose rock, paper, or scissors
+        tk.Radiobutton(self.window, text="Rock", variable=self.user_choice, value="rock").pack()
+        tk.Radiobutton(self.window, text="Paper", variable=self.user_choice, value="paper").pack()
+        tk.Radiobutton(self.window, text="Scissors", variable=self.user_choice, value="scissors").pack()
+
+        # Create a button to start the game
+        tk.Button(self.window, text="Play", command=self.play_game).pack()
+
+        # Create labels to display the computer's move and the result
+        tk.Label(self.window, text="Computer's move:").pack()
+        tk.Label(self.window, textvariable=self.computer_choice).pack()
+
+        tk.Label(self.window, text="Result:").pack()
+        tk.Label(self.window, textvariable=self.result).pack()
+
+    def get_computer_choice(self):
+        # Generate a random choice for the computer
+        choices = ["rock", "paper", "scissors"]
+        return random.choice(choices)
+
+    def determine_winner(self, user_choice, computer_choice):
+        # Determine the winner based on the game rules
+        if user_choice == computer_choice:
+            return "It's a tie!"
+        if (user_choice == "rock" and computer_choice == "scissors") or \
+           (user_choice == "scissors" and computer_choice == "paper") or \
+           (user_choice == "paper" and computer_choice == "rock"):
+            return "You win!"
+        return "You lose!"
+
+    def play_game(self):
+        # Get the user's choice from the radio buttons
+        user_choice = self.user_choice.get()
+        if not user_choice:
+            # If the user hasn't chosen a move, display an error message
+            self.result.set("Please choose a move!")
+            return
+
+        # Generate the computer's choice
+        computer_choice = self.get_computer_choice()
+        self.computer_choice.set(computer_choice)
+
+        # Determine the winner and display the result
+        result = self.determine_winner(user_choice, computer_choice)
+        self.result.set(result)
+
+    def run(self):
+        # Start the main event loop
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    # Create an instance of the game
+    game = RockPaperScissors()
+    # Start the game
+    game.run()
